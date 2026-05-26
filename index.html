@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pi App Test</title>
+    <!-- Pi Network SDK -->
+    <script src="https://minepi.com"></script>
+    <script>
+        Pi.init({ version: "2.0", sandbox: true });
+        
+        async function makePayment() {
+            try {
+                const payment = await Pi.createPayment({
+                    amount: 0.1,
+                    memo: "Test App Payment",
+                    metadata: { developer: "test" }
+                }, {
+                    onReadyForServerApproval: function(paymentId) { console.log(paymentId); },
+                    onReadyForServerCompletion: function(paymentId, txid) { console.log(txid); },
+                    onCancel: function(paymentId) { console.log("Cancelled"); },
+                    onError: function(error, paymentId) { console.error(error); }
+                });
+            } catch(err) {
+                alert("Error: " + err.message);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1 style="text-align: center; margin-top: 50px;">My Pi App</h1>
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="makePayment()" style="padding: 15px 30px; font-size: 18px; background-color: #6d28d9; color: white; border: none; border-radius: 8px; cursor: pointer;">Test Pi Payment</button>
+    </div>
+</body>
+</html>
